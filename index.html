@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Contábil - Multi-Escritório</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-card">
+                <h1>📊 CRM Contábil</h1>
+                <p class="subtitle">Sistema Multi-Escritório</p>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" required placeholder="seu@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Primeiro acesso? <a href="#" id="setup-link">Configure o sistema</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA DE SELEÇÃO DE ESCRITÓRIO -->
+    <div id="office-selection-screen" class="screen">
+        <div class="login-container">
+            <div class="login-card">
+                <h2>Selecione o Escritório</h2>
+                <p class="subtitle">Você tem acesso a múltiplos escritórios</p>
+                
+                <div id="offices-list" class="offices-list">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA PRINCIPAL (DASHBOARD) -->
+    <div id="dashboard-screen" class="screen">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="header-left">
+                <h1 class="logo">📊 CRM Contábil</h1>
+                <div class="office-selector">
+                    <select id="current-office">
+                        <!-- Preenchido dinamicamente -->
+                    </select>
+                </div>
+            </div>
+            <div class="header-right">
+                <span id="user-name" class="user-name"></span>
+                <button id="logout-btn" class="btn btn-secondary btn-sm">Sair</button>
+            </div>
+        </header>
+
+        <!-- NAVEGAÇÃO -->
+        <nav class="nav">
+            <button class="nav-item active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="nav-item" data-tab="leads">🎯 Leads</button>
+            <button class="nav-item" data-tab="clients">👥 Clientes</button>
+            <button class="nav-item" data-tab="financial">💰 Financeiro</button>
+            <button class="nav-item" data-tab="settings">⚙️ Configurações</button>
+        </nav>
+
+        <!-- CONTEÚDO -->
+        <main class="main-content">
+            <!-- TAB: DASHBOARD -->
+            <div id="tab-dashboard" class="tab-content active">
+                <h2>Dashboard</h2>
+                
+                <div class="cards-grid">
+                    <div class="card stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-clients">0</div>
+                            <div class="stat-label">Clientes Ativos</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-revenue">R$ 0,00</div>
+                            <div class="stat-label">Receita Mensal</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="stat-icon">⚠️</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-overdue">0</div>
+                            <div class="stat-label">Pagamentos Atrasados</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="stat-leads">0</div>
+                            <div class="stat-label">Leads Ativos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>⚠️ Ações Necessárias</h3>
+                    <div class="card">
+                        <ul id="action-items" class="action-list">
+                            <li>Carregando...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: LEADS -->
+            <div id="tab-leads" class="tab-content">
+                <div class="tab-header">
+                    <h2>Leads</h2>
+                    <button id="add-lead-btn" class="btn btn-primary">+ Novo Lead</button>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="search-leads" placeholder="🔍 Buscar lead..." class="search-input">
+                    <select id="filter-lead-status" class="filter-select">
+                        <option value="">Todos os status</option>
+                        <option value="novo">Novo</option>
+                        <option value="contato">Em Contato</option>
+                        <option value="proposta">Proposta Enviada</option>
+                        <option value="ganho">Ganho</option>
+                        <option value="perdido">Perdido</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Empresa</th>
+                                <th>Telefone</th>
+                                <th>Status</th>
+                                <th>Responsável</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leads-table-body">
+                            <tr>
+                                <td colspan="6" class="empty-state">Nenhum lead encontrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB: CLIENTES -->
+            <div id="tab-clients" class="tab-content">
+                <div class="tab-header">
+                    <h2>Clientes</h2>
+                    <button id="add-client-btn" class="btn btn-primary">+ Novo Cliente</button>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="search-clients" placeholder="🔍 Buscar cliente..." class="search-input">
+                    <select id="filter-client-status" class="filter-select">
+                        <option value="">Todos</option>
+                        <option value="ativo">Ativos</option>
+                        <option value="inativo">Inativos</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Documento</th>
+                                <th>Telefone</th>
+                                <th>Honorário</th>
+                                <th>Status Pagamento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-table-body">
+                            <tr>
+                                <td colspan="6" class="empty-state">Nenhum cliente encontrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB: FINANCEIRO -->
+            <div id="tab-financial" class="tab-content">
+                <h2>Financeiro</h2>
+                
+                <div class="filters">
+                    <select id="filter-month" class="filter-select">
+                        <!-- Preenchido dinamicamente -->
+                    </select>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3>Receita Esperada</h3>
+                        <div class="financial-value" id="expected-revenue">R$ 0,00</div>
+                    </div>
+                    <div class="card">
+                        <h3>Recebido</h3>
+                        <div class="financial-value success" id="received-revenue">R$ 0,00</div>
+                    </div>
+                    <div class="card">
+                        <h3>Em Atraso</h3>
+                        <div class="financial-value danger" id="overdue-revenue">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Detalhamento por Cliente</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Valor</th>
+                                <th>Vencimento</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="financial-table-body">
+                            <tr>
+                                <td colspan="5" class="empty-state">Nenhum registro encontrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB: CONFIGURAÇÕES -->
+            <div id="tab-settings" class="tab-content">
+                <h2>Configurações</h2>
+
+                <div class="card">
+                    <h3>Escritórios</h3>
+                    <button id="add-office-btn" class="btn btn-primary">+ Novo Escritório</button>
+                    <div id="offices-settings-list" class="settings-list">
+                        <!-- Preenchido dinamicamente -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Usuários</h3>
+                    <button id="add-user-btn" class="btn btn-primary">+ Novo Usuário</button>
+                    <div id="users-settings-list" class="settings-list">
+                        <!-- Preenchido dinamicamente -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Dados do Sistema</h3>
+                    <button id="export-data-btn" class="btn btn-secondary">📥 Exportar Dados</button>
+                    <button id="import-data-btn" class="btn btn-secondary">📤 Importar Dados</button>
+                    <button id="clear-data-btn" class="btn btn-danger">🗑️ Limpar Todos os Dados</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL GENÉRICO -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Título</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Conteúdo dinâmico -->
+            </div>
+        </div>
+    </div>
+
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
