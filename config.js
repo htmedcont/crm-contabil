@@ -6,8 +6,8 @@
 // Obter em: Supabase Dashboard → Settings → API
 
 const SUPABASE_CONFIG = {
-    url: 'SUA_URL_AQUI', // Ex: https://xxxxx.supabase.co
-    anonKey: 'SUA_CHAVE_ANON_AQUI' // Chave pública (anon/public)
+    url: 'https://wrsdqvftdzirayakwzoc.supabase.co', // Ex: https://xxxxx.supabase.co
+    anonKey: 'sb_publishable_p6nZ21-RUDN-GhCFy2Aqvw_4Aaix9lW' // Chave pública (anon/public)
 };
 
 // ============================================
